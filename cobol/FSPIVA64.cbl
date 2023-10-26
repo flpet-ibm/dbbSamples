@@ -184,7 +184,8 @@
                                                                         00018200
        PROCESS-INPUT.                                                   00018300
                                                                         00018400
-           CALL 'FSPPROCI' USING INPUT-AREA, IOAREA,
+           CALL FSPPROCI USING INPUT-AREA, IOAREA,
+      *    CALL 'FSPPROCI' USING INPUT-AREA, IOAREA,
                     DBPCB, GIPCB, GOPCB WS-STATUS.
            DISPLAY 'FSPIVA64 status from FSPPROCI: ' ws-status.
       *    CALL FSPPROCA USING INPUT-AREA, IOAREA,                      00018500

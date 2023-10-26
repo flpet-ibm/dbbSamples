@@ -1,6 +1,6 @@
        IDENTIFICATION DIVISION.                                         00000100
-       PROGRAM-ID. FSPPROCA.                                            00000200
-      ********************************************************ÖSCPYRT** 00000201
+       PROGRAM-ID. FSPPROCI.                                            00000200
+      ********************************************************@SCPYRT** 00000201
       *                                                               * 00000202
       *  Licensed Materials - Property of IBM                         * 00000203
       *                                                               * 00000204
@@ -19,9 +19,9 @@
       * and application integration testing with IBM Z Virtual Test   * 00000217
       * Platform                                                        00000218
       *                                                                 00000219
-      *     Flemming Skovgaard Petersen, flemming.petersenÖdk.ibm.com   00000220
+      *     Flemming Skovgaard Petersen, flemming.petersen@dk.ibm.com   00000220
       *         Copyright IBM Corp, 2021                              * 00000221
-      ********************************************************ÖECPYRT** 00000222
+      ********************************************************@ECPYRT** 00000222
        DATE-WRITTEN. 11/09/2021.                                        00000300
                                                                         00000400
        DATA DIVISION.                                                   00000500
@@ -54,17 +54,6 @@
        77  ISRT            PIC  X(4)  VALUE 'ISRT'.                     00003200
        77  DLET            PIC  X(4)  VALUE 'DLET'.                     00003300
        77  REPL            PIC  X(4)  VALUE 'REPL'.                     00003400
-
-       01 constanter.
-             10 KK-HEX-0000          PIC 9(9)  COMP  VALUE 0.
-             10 KK-HEX-000C          PIC 9(9)  COMP  VALUE 12.
-             10 KK-HEX-0100          PIC 9(9)  COMP  VALUE 256.
-             10 KK-HEX-0104          PIC 9(9)  COMP  VALUE 260.
-             10 KK-HEX-0208          PIC 9(9)  COMP  VALUE 520.
-             10 KK-HEX-0210          PIC 9(9)  COMP  VALUE 528.
-             10 KK-HEX-0218          PIC 9(9)  COMP  VALUE 536.
-             10 KK-HEX-0610          PIC 9(9)  COMP  VALUE 1552.
-             10 KK-HEX-0900          PIC 9(9)  COMP  VALUE 2304.
                                                                         00003500
       * COUNTERS                                                        00003600
                                                                         00003700
@@ -114,55 +103,6 @@
           02  SEG-KEY-NAME  PIC X(11) VALUE '(A1111111 ='.              00008100
           02  SSA-KEY       PIC X(10).                                  00008200
           02  FILLER        PIC X VALUE ')'.                            00008300
-
-       01  AIB.
-          05 AIB-APPL-INTERFACE-BLOCK.
-      *                                 APPLICATION INTERFACE BLOCK
-      *                                 A I B
-      *
-             10 AIB-ID                  PIC X(8)
-                                        VALUE 'DFSAIB'.
-             10 AIB-LEN                 PIC 9(9)       COMP
-                                        VALUE 128.
-             10 AIB-SUB-FUNK.
-               15 AIB-SUB-FUNK-1        PIC X(4)
-                                        VALUE '    '.
-               15 AIB-SUB-FUNK-2        PIC X(4)
-                                        VALUE '    '.
-             10 AIB-PCB-NAMN            PIC X(8)
-                                        VALUE '        '.
-             10 FILLER                  OCCURS 16 TIMES
-                                        PIC X
-                                        VALUE ' '.
-      *                                 RESERV
-             10 AIB-IOAREA-LENGTH       PIC 9(9)       COMP
-                                        VALUE 5000.
-             10 AIB-IOAREA-USED         PIC 9(9)       COMP
-                                        VALUE ZEROS.
-             10 FILLER                  OCCURS 12 TIMES
-                                        PIC X
-                                        VALUE ' '.
-      *                                 RESERV
-             10 AIB-RETURN-CODE         PIC 9(9)       COMP
-                                        VALUE ZEROS.
-             10 AIB-RED-RETU REDEFINES AIB-RETURN-CODE
-                                        PIC X(4).
-             10 AIB-REASON-CODE         PIC 9(9)       COMP
-                                        VALUE ZEROS.
-             10 AIB-RED-REAS REDEFINES AIB-REASON-CODE
-                                        PIC X(4).
-             10 FILLER                  OCCURS 4 TIMES
-                                        PIC X
-                                        VALUE ' '.
-      *                                 RESERV
-             10 AIB-PCB-PTR                            POINTER.
-             10 FILLER                  OCCURS 48 TIMES
-                                        PIC X
-                                        VALUE ' '.
-      *                                 RESERV
-      *--------------------------------------------------------------*
-      *        SLUT P$ COBOL COPY: AIB                               *
-      *--------------------------------------------------------------*
                                                                         00008400
        LINKAGE SECTION.                                                 00008500
                                                                         00008600
@@ -217,18 +157,16 @@
            02  SEG-NAME-FB     PIC  X(8).                               00013500
            02  LENGTH-FB-KEY   PIC  9(4).                               00013600
            02  NUMB-SENS-SEGS  PIC  9(4).                               00013700
-           02  KEY-FB-AREA     PIC  X(17).                              00013701
-                                                                        00013702
-       01 LS-STATUS            PIC  X(40).                              00013800
+           02  KEY-FB-AREA     PIC  X(17).                              00013800
                                                                         00013900
                                                                         00014000
        PROCEDURE DIVISION USING INPUT-AREA, IOAREA,                     00014100
-                                DBPCB, GIPCB, GOPCB LS-STATUS.          00014200
+                                DBPCB, GIPCB, GOPCB.                    00014200
        MAIN SECTION.                                                    00014300
                                                                         00014400
            MOVE SPACES TO OUT-BLANK.                                    00014500
            MOVE SPACES TO IO-BLANK.                                     00014600
-           DISPLAY 'FSPPROCA is running.'                               00014700
+                                                                        00014700
       *    CHECK THE LEADING SPACE IN INPUT COMMAND AND TRIM IT OFF     00014800
                                                                         00014900
            INSPECT IN-COMMAND TALLYING L-SPACE-CTR FOR LEADING SPACE    00015000
@@ -311,9 +249,7 @@
                MOVE IN-LAST-NAME TO OUT-LAST-NAME                       00022700
                MOVE MINV TO OUT-MESSAGE                                 00022800
                PERFORM PRINT-OUTPUT                                     00022900
-           END-IF.                                                      00022901
-           MOVE IN-COMMAND TO LS-STATUS                                 00022902
-           MOVE IN-LAST-NAME TO LS-STATUS(6:)                           00023000
+           END-IF.                                                      00023000
            EXIT.                                                        00023100
                                                                         00023200
                                                                         00023300
@@ -321,6 +257,7 @@
                                                                         00023500
        TO-ADD.                                                          00023600
            MOVE IN-FIRST-NAME TO IO-FIRST-NAME.                         00023700
+      *    MOVE 'zUnit' TO IO-FIRST-NAME.
            MOVE IN-EXTENSION  TO IO-EXTENSION.                          00023800
            MOVE IN-ZIP-CODE   TO IO-ZIP-CODE.                           00023900
            MOVE IO-DATA       TO OUT-DATA.                              00024000
@@ -395,18 +332,8 @@
                                                                         00030800
        ISRT-DB.                                                         00030900
            MOVE ISRT TO DC-ERROR-CALL.                                  00031000
-      *    CALL 'CBLTDLI' USING ISRT, DBPCB, IOAREA, SSA1               00031100
-           MOVE LENGTH IOAREA  TO AIB-IOAREA-LENGTH
-           MOVE 'TELEPCB1'        TO AIB-PCB-NAMN
-           CALL 'AIBTDLI'         USING ISRT
-                                        AIB
-                                        IOAREA SSA1
-           END-CALL
-
-      *    IF DBSTATUS  = SPACES
-           IF AIB-RETURN-CODE  = KK-HEX-0000 AND
-              AIB-REASON-CODE  = KK-HEX-0000
-           THEN
+           CALL 'CBLTDLI' USING ISRT, DBPCB, IOAREA, SSA1               00031100
+           IF DBSTATUS   = SPACES THEN                                  00031200
               IF PROCESS-TADD                                           00031300
                  DISPLAY 'INSERT IS DONE, REPLY' UPON CONSOLE           00031400
                  ACCEPT REPLY FROM CONSOLE                              00031500
@@ -423,18 +350,8 @@
                                                                         00032600
        GET-UNIQUE-DB.                                                   00032700
            MOVE GET-UNIQUE TO DC-ERROR-CALL.                            00032800
-      *     CALL 'CBLTDLI' USING GET-UNIQUE, DBPCB, IOAREA, SSA.
-
-           MOVE LENGTH IOAREA  TO AIB-IOAREA-LENGTH
-           MOVE 'TELEPCB1'        TO AIB-PCB-NAMN
-           CALL 'AIBTDLI'         USING GET-UNIQUE
-                                        AIB
-                                        IOAREA, SSA
-           END-CALL
-                                                                        00032900
-      *    IF DBSTATUS NOT = SPACES                                     00033000
-           IF AIB-RETURN-CODE NOT = KK-HEX-0000 OR
-              AIB-REASON-CODE NOT = KK-HEX-0000
+           CALL 'CBLTDLI' USING GET-UNIQUE, DBPCB, IOAREA, SSA.         00032900
+           IF DBSTATUS NOT = SPACES                                     00033000
            THEN                                                         00033100
               MOVE MNOENT TO OUT-MESSAGE                                00033200
               MOVE DBSTATUS TO DC-ERROR-STATUS                          00033300
@@ -444,18 +361,8 @@
                                                                         00033700
        GET-HOLD-UNIQUE-DB.                                              00033800
            MOVE GET-HOLD-UNIQUE TO DC-ERROR-CALL.                       00033900
-      *    CALL 'CBLTDLI' USING GET-HOLD-UNIQUE, DBPCB, IOAREA, SSA.    00034000
-           MOVE LENGTH IOAREA  TO AIB-IOAREA-LENGTH
-           MOVE 'TELEPCB1'        TO AIB-PCB-NAMN
-           CALL 'AIBTDLI'         USING GET-HOLD-UNIQUE
-                                        AIB
-                                        IOAREA, SSA
-           END-CALL
-
-      *    IF DBSTATUS NOT = SPACES
-           IF AIB-RETURN-CODE NOT = KK-HEX-0000 OR
-              AIB-REASON-CODE NOT = KK-HEX-0000
-           THEN
+           CALL 'CBLTDLI' USING GET-HOLD-UNIQUE, DBPCB, IOAREA, SSA.    00034000
+           IF DBSTATUS NOT = SPACES THEN                                00034100
               MOVE MNOENT   TO OUT-MESSAGE                              00034200
               MOVE DBSTATUS TO DC-ERROR-STATUS                          00034300
               PERFORM PRINT-OUTPUT                                      00034400
@@ -464,18 +371,9 @@
                                                                         00034700
        REPL-DB.                                                         00034800
            MOVE REPL TO DC-ERROR-CALL.                                  00034900
-      *     CALL 'CBLTDLI' USING REPL, DBPCB, IOAREA.                   00035000
-           MOVE LENGTH IOAREA  TO AIB-IOAREA-LENGTH
-           MOVE 'TELEPCB1'        TO AIB-PCB-NAMN
-           CALL 'AIBTDLI'         USING REPL
-                                        AIB
-                                        IOAREA
-           END-CALL
-
-      *    IF DBSTATUS  = SPACES
-           IF AIB-RETURN-CODE  = KK-HEX-0000 AND
-              AIB-REASON-CODE  = KK-HEX-0000
-           THEN
+           CALL 'CBLTDLI' USING REPL, DBPCB, IOAREA.                    00035000
+           IF DBSTATUS = SPACES                                         00035100
+           THEN                                                         00035200
               MOVE MUPD1 TO OUT-MESSAGE                                 00035300
               PERFORM PRINT-OUTPUT                                      00035400
            ELSE                                                         00035500
@@ -487,17 +385,8 @@
                                                                         00036100
        DLET-DB.                                                         00036200
            MOVE DLET TO DC-ERROR-CALL.                                  00036300
-      *    CALL 'CBLTDLI' USING DLET, DBPCB, IOAREA.                    00036400
-           MOVE LENGTH IOAREA  TO AIB-IOAREA-LENGTH
-           MOVE 'TELEPCB1'        TO AIB-PCB-NAMN
-           CALL 'AIBTDLI'         USING DLET
-                                        AIB
-                                        IOAREA
-           END-CALL
-
-      *    IF DBSTATUS  = SPACES
-           IF AIB-RETURN-CODE  = KK-HEX-0000 AND
-              AIB-REASON-CODE  = KK-HEX-0000
+           CALL 'CBLTDLI' USING DLET, DBPCB, IOAREA.                    00036400
+           IF DBSTATUS = SPACES                                         00036500
            THEN                                                         00036600
               MOVE MDEL TO OUT-MESSAGE                                  00036700
               PERFORM PRINT-OUTPUT                                      00036800
@@ -512,4 +401,4 @@
                                GIPCB, GOPCB.                            00037700
            EXIT.                                                        00037800
                                                                         00037900
-       END PROGRAM FSPPROCA.                                            00038000
+       END PROGRAM FSPPROCI.                                            00038000
