@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<runner:RunnerConfiguration xmlns:runner="http://www.ibm.com/zUnit/3.0.0.0/TestRunner" id="a7f27c1e-ede5-4cc9-8dfe-7138c252e9bc">
+  <runner:options contOnTestCaseError="false" contOnTestCaseFail="true" contOnTestError="false" contOnTestFail="true" fileIOCapture="enable"/>
+  <runner:testCase moduleName="TEBUD01">
+    <test name="TEST1" entry="TEST_TEST1" type="BTCH" init="BZU_INIT" term="BZU_TERM" program="EBUD01" commarea="0" skipTest="false" resetFile="true" stubCall="true" dummy="false"/>
+    <test name="TEST2" entry="TEST_TEST2" type="BTCH" init="BZU_INIT" term="BZU_TERM" program="EBUD01" commarea="0" skipTest="false" resetFile="true" stubCall="true" dummy="false"/>
+  </runner:testCase>
+  <runner:intercept module="EBUD01" stub="false" lengths="94" parmtype="I" retcode="true" exist="false"/>
+  <runner:intercept module="EBUD02" stub="true" lengths="21" parmtype="I" retcode="false" exist="false"/>
+  <runner:intercept module="EBUD03" stub="true" lengths="93" parmtype="I" retcode="false" exist="false"/>
+  <runner:playback moduleName="EBUD01">
+    <playbackFile name="&lt;HLQ>.ZUNIT.PB.EBUD01" localName="EBUD01.plbck"/>
+  </runner:playback>
+  <runner:fileAttributes hlqDdName="AZUHLQ"/>
+</runner:RunnerConfiguration>
